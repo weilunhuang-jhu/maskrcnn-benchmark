@@ -18,26 +18,7 @@ class PascalVOCDataset(torch.utils.data.Dataset):
 
     CLASSES = (
         "__background__ ",
-        "aeroplane",
-        "bicycle",
-        "bird",
-        "boat",
-        "bottle",
-        "bus",
-        "car",
-        "cat",
-        "chair",
-        "cow",
-        "diningtable",
-        "dog",
-        "horse",
-        "motorbike",
-        "person",
-        "pottedplant",
-        "sheep",
-        "sofa",
-        "train",
-        "tvmonitor",
+        "lesion",  
     )
 
     def __init__(self, data_dir, split, use_difficult=False, transforms=None):
@@ -47,7 +28,7 @@ class PascalVOCDataset(torch.utils.data.Dataset):
         self.transforms = transforms
 
         self._annopath = os.path.join(self.root, "Annotations", "%s.xml")
-        self._imgpath = os.path.join(self.root, "JPEGImages", "%s.jpg")
+        self._imgpath = os.path.join(self.root, "JPEGImages", "%s.png")
         self._imgsetpath = os.path.join(self.root, "ImageSets", "Main", "%s.txt")
 
         with open(self._imgsetpath % self.image_set) as f:
@@ -57,6 +38,7 @@ class PascalVOCDataset(torch.utils.data.Dataset):
 
         cls = PascalVOCDataset.CLASSES
         self.class_to_ind = dict(zip(cls, range(len(cls))))
+        
 
     def __getitem__(self, index):
         img_id = self.ids[index]
@@ -105,8 +87,12 @@ class PascalVOCDataset(torch.utils.data.Dataset):
                 bb.find("ymax").text,
             ]
             bndbox = tuple(
-                map(lambda x: x - TO_REMOVE, list(map(int, box)))
+                map(lambda x: x - TO_REMOVE, list(map(float, box)))
             )
+            
+            #debug
+            #print(bndbox);
+            #print(name);
 
             boxes.append(bndbox)
             gt_classes.append(self.class_to_ind[name])
