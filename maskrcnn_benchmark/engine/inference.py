@@ -17,8 +17,23 @@ def compute_on_dataset(model, data_loader, device, timer=None):
     model.eval()
     results_dict = {}
     cpu_device = torch.device("cpu")
-    for _, batch in enumerate(tqdm(data_loader)):
+    for i, batch in enumerate(tqdm(data_loader)):
+        #debug
+        print("i is: "+str(i));
+        if i>5:
+            break;
+        
         images, targets, image_ids = batch
+        
+        #debug
+        print("id:")
+        print(image_ids[0]);
+        print("image size:")
+        print(images.image_sizes);
+        print("targets");
+        print(targets);
+        print(targets[0].bbox); 
+        
         images = images.to(device)
         with torch.no_grad():
             if timer:
@@ -28,6 +43,12 @@ def compute_on_dataset(model, data_loader, device, timer=None):
                 torch.cuda.synchronize()
                 timer.toc()
             output = [o.to(cpu_device) for o in output]
+        
+        #debug
+        print("output:")
+        print(output)
+        print(output[0].bbox);
+        
         results_dict.update(
             {img_id: result for img_id, result in zip(image_ids, output)}
         )
@@ -96,6 +117,9 @@ def inference(
     )
 
     predictions = _accumulate_predictions_from_multiple_gpus(predictions)
+    #debug
+    print("len of predictions")
+    print(len(predicitons))
     if not is_main_process():
         return
 

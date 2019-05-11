@@ -29,3 +29,8 @@ dist/
 /datasets
 /models
 /output
+
+
+#others
+inference/
+last_checkpoint

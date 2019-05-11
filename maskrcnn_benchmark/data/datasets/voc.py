@@ -50,7 +50,7 @@ class PascalVOCDataset(torch.utils.data.Dataset):
         if self.transforms is not None:
             img, target = self.transforms(img, target)
 
-        return img, target, index
+        return img, target, img_id#index
 
     def __len__(self):
         return len(self.ids)
@@ -59,15 +59,15 @@ class PascalVOCDataset(torch.utils.data.Dataset):
         
         img_id = self.ids[index]
         #debug
-        print("============id============")
-        print(img_id)
+        #print("============id============")
+        #print(img_id)
         anno = ET.parse(self._annopath % img_id).getroot()
         anno = self._preprocess_annotation(anno)
 
         height, width = anno["im_info"]
         
         #debug
-        print(anno["boxes"]);
+        #print(anno["boxes"]);
 
         target = BoxList(anno["boxes"], (width, height), mode="xyxy")
         target.add_field("labels", anno["labels"])
@@ -110,6 +110,8 @@ class PascalVOCDataset(torch.utils.data.Dataset):
             difficult_boxes.append(difficult)
 
         size = target.find("size")
+        #debug
+        #print("hight is"+size.find("height").text+"; width is"+size.find("width").text);
         im_info = tuple(map(int, (size.find("height").text, size.find("width").text)))
 
         res = {

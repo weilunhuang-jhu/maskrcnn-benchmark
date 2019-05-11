@@ -113,6 +113,7 @@ def make_data_loader(cfg, is_train=True, is_distributed=False, start_iter=0):
         ), "SOLVER.IMS_PER_BATCH ({}) must be divisible by the number "
         "of GPUs ({}) used.".format(images_per_batch, num_gpus)
         images_per_gpu = images_per_batch // num_gpus
+        #debug
         #disable shuffle
         shuffle = False
         num_iters = cfg.SOLVER.MAX_ITER
@@ -123,7 +124,9 @@ def make_data_loader(cfg, is_train=True, is_distributed=False, start_iter=0):
         ), "TEST.IMS_PER_BATCH ({}) must be divisible by the number "
         "of GPUs ({}) used.".format(images_per_batch, num_gpus)
         images_per_gpu = images_per_batch // num_gpus
-        shuffle = False if not is_distributed else True
+        #debug
+        shuffle=False
+        #shuffle = False if not is_distributed else True
         num_iters = None
         start_iter = 0
 
