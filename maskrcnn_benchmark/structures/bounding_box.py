@@ -17,11 +17,17 @@ class BoxList(object):
     """
 
     def __init__(self, bbox, image_size, mode="xyxy"):
+        #print("We got here");
         device = bbox.device if isinstance(bbox, torch.Tensor) else torch.device("cpu")
         bbox = torch.as_tensor(bbox, dtype=torch.float32, device=device)
+       # print("bbox.ndimension")
+       # print(bbox.ndimension())
+       # print("bbox.shape")
+       # print(bbox.shape)
+        #print(bbox)
         if bbox.ndimension() != 2:
             raise ValueError(
-                "bbox should have 2 dimensions, got {}".format(bbox.ndimension())
+               "bbox should have 2 dimensions, got {}".format(bbox.ndimension())
             )
         if bbox.size(-1) != 4:
             raise ValueError(
@@ -31,6 +37,8 @@ class BoxList(object):
         if mode not in ("xyxy", "xywh"):
             raise ValueError("mode should be 'xyxy' or 'xywh'")
 
+        #debug
+        #print(bbox)
         self.bbox = bbox
         self.size = image_size  # (image_width, image_height)
         self.mode = mode

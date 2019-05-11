@@ -20,8 +20,8 @@ class PascalVOCDataset(torch.utils.data.Dataset):
         "__background__ ",
         "lesion",  
     )
-
-    def __init__(self, data_dir, split, use_difficult=False, transforms=None):
+    #debug
+    def __init__(self, data_dir, split, use_difficult=True, transforms=None): #set use_difficult to True
         self.root = data_dir
         self.image_set = split
         self.keep_difficult = use_difficult
@@ -56,11 +56,19 @@ class PascalVOCDataset(torch.utils.data.Dataset):
         return len(self.ids)
 
     def get_groundtruth(self, index):
+        
         img_id = self.ids[index]
+        #debug
+        print("============id============")
+        print(img_id)
         anno = ET.parse(self._annopath % img_id).getroot()
         anno = self._preprocess_annotation(anno)
 
         height, width = anno["im_info"]
+        
+        #debug
+        print(anno["boxes"]);
+
         target = BoxList(anno["boxes"], (width, height), mode="xyxy")
         target.add_field("labels", anno["labels"])
         target.add_field("difficult", anno["difficult"])
@@ -74,8 +82,11 @@ class PascalVOCDataset(torch.utils.data.Dataset):
         
         for obj in target.iter("object"):
             difficult = int(obj.find("difficult").text) == 1
-            if not self.keep_difficult and difficult:
-                continue
+            #debug
+            #if not self.keep_difficult and difficult:
+            #   continue;
+            if difficult:
+                print("difficult!")
             name = obj.find("name").text.lower().strip()
             bb = obj.find("bndbox")
             # Make pixel indexes 0-based

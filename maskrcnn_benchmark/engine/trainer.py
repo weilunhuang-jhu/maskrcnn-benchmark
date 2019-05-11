@@ -55,6 +55,17 @@ def do_train(
     start_training_time = time.time()
     end = time.time()
     for iteration, (images, targets, _) in enumerate(data_loader, start_iter):
+        #debug
+        #if iteration<1509:
+        #    continue;
+        #print("iteration:"+str(iteration));
+        #print("===============================================================")
+        #debug
+        #print("images shape")
+        #print(len(images));
+        #print("targets shape")
+        #print(len(targets));
+
         data_time = time.time() - end
         iteration = iteration + 1
         arguments["iteration"] = iteration
