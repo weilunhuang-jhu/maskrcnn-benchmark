@@ -1,5 +1,9 @@
-1.command for testing
+1.link dataset
+ln -s /absolute_path_to_VOC2007 /absolute_path_to_maskrcnn-benchmark/datasets/voc
+
+
+2.command for testing
 python tools/demo_deeplesion.py --config-file configs/pascal_voc/e2e_faster_rcnn_R_50_C4_1x_4_gpu_voc.yaml MODEL.ROI_BOX_HEAD.NUM_CLASSES 2 MODEL.WEIGHT /home/weilunhuang/maskrcnn-benchmark/model_final.pth TEST.IMS_PER_BATCH 1
 
-2.command for training
+3.command for training
 python tools/train_net.py --config-file configs/pascal_voc/e2e_faster_rcnn_R_50_C4_1x_4_gpu_voc.yaml MODEL.ROI_BOX_HEAD.NUM_CLASSES 2 

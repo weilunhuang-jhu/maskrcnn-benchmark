@@ -20,8 +20,8 @@ def compute_on_dataset(model, data_loader, device, timer=None):
     for i, batch in enumerate(tqdm(data_loader)):
         #debug
         print("i is: "+str(i));
-        if i>5:
-            break;
+        #if i>5:
+        #    break;
         
         images, targets, image_ids = batch
         
@@ -118,8 +118,8 @@ def inference(
 
     predictions = _accumulate_predictions_from_multiple_gpus(predictions)
     #debug
-    print("len of predictions")
-    print(len(predicitons))
+    #print("len of predictions")
+    #print(len(predicitons))
     if not is_main_process():
         return
 
